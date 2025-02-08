@@ -11,7 +11,11 @@ clean:
 C_FILES = $(wildcard $(SRC_DIR)/*.c)
 ASM_FILES = $(wildcard $(SRC_DIR)/*.S)
 OBJ_FILES = $(C_FILES:$(SRC_DIR)/%.c=$(BUILD_DIR)/%_c.o)
-OBJ_FILES = $(ASM_FILES:$(SRC_DIR)/%.S=$(BUILD_DIR)/%_S.o)
+OBJ_FILES += $(ASM_FILES:$(SRC_DIR)/%.S=$(BUILD_DIR)/%_S.o)
+
+$(BUILD_DIR)/%_c.o: $(SRC_DIR)/%.c
+	mkdir -p $(@D)
+	clang --target=aarch64-elf $(CFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/%_S.o: $(SRC_DIR)/%.S
 	mkdir -p $(@D)

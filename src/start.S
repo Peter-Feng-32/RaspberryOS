@@ -1,3 +1,5 @@
+#include "mm.h"
+
 .section ".text.boot"
 .global _start
 
@@ -23,6 +25,6 @@ master:
     sub x1, x1, x0 
     bl memzero
 
-    mov sp, #0x4000000 // For now, set stack pointer to 0x4000000
+    mov sp, #LOW_MEMORY // For now, set stack pointer to 0x4000000
     bl kernel_main   
 

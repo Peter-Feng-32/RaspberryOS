@@ -1,4 +1,4 @@
-CFLAGS = -Wall -O2 -ffreestanding -nostdinc -nostdlib -mcpu=cortex-a53+nosimd
+CFLAGS = -Wall -O2 -ffreestanding -nostdinc -nostdlib -Iinclude -mcpu=cortex-a53+nosimd
 
 BUILD_DIR = build
 SRC_DIR=src

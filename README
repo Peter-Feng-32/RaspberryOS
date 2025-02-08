@@ -1,0 +1,6 @@
+Current step:
+
+Write a GPIO driver to be able to read/write GPIO pins.
+Going to use this to talk with the computer using the UART device.
+
+After that, we can implement a shell with hard coded 'echo'.

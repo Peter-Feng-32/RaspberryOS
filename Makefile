@@ -1,4 +1,4 @@
-CFLAGS = -Wall -O2 -ffreestanding -nostdinc -nostdlib -Iinclude -mcpu=cortex-a53+nosimd
+CFLAGS = -Wall -O2 -ffreestanding -nostdinc -nostdlib -Iinclude -mcpu=cortex-a53+nosimd -g
 
 BUILD_DIR = build
 SRC_DIR=src
@@ -26,4 +26,4 @@ kernel8.img: $(SRC_DIR)/link.ld $(OBJ_FILES)
 	llvm-objcopy -O binary $(BUILD_DIR)/kernel8.elf $(BUILD_DIR)/kernel8.img
 
 run: kernel8.img
-	qemu-system-aarch64 -M raspi3b -kernel $(BUILD_DIR)/kernel8.img -d in_asm
+	qemu-system-aarch64 -M raspi3b -kernel $(BUILD_DIR)/kernel8.img -d in_asm -serial null -serial vc

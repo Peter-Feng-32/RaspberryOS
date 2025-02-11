@@ -1,6 +1,10 @@
 Current step:
 
-Write a GPIO driver to be able to read/write GPIO pins.
-Going to use this to talk with the computer using the UART device.
+Write a GPIO driver to be able to read/write GPIO pins. - Done
+Going to use this to talk with the computer using the UART device. - Done
 
-After that, we can implement a shell with hard coded 'echo'.
+Now we implement XMODEM for file transfer.
+
+Then we write a utility to talk to our raspberry pi (ttywrite)
+
+After that, we can implement a shell with hard coded 'echo'.  Store arguments as a stack vector.  Make a console.

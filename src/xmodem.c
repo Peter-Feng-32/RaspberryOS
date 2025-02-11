@@ -71,8 +71,9 @@ int xmodem_receive( sender_func_type sender_func, receiver_func_type receiver_fu
         for (int i = 0; i < PACKET_SIZE; i++) {
             char recvd = receiver_func();
             recv_buffer[recv_buffer_index + i] = recvd;
-            checksum += recvd % CHECKSUM_MOD;
+            checksum += recvd;
         }
+        checksum = checksum % CHECKSUM_MOD;
 
         char recvd_checksum = receiver_func();
         if(recvd_checksum != checksum) {
@@ -80,7 +81,7 @@ int xmodem_receive( sender_func_type sender_func, receiver_func_type receiver_fu
         } else {
             sender_func(ACK);
             recv_buffer_index += PACKET_SIZE;
-            packet_num += 1 % (PACKET_NUM_MAX + 1);
+            packet_num = (packet_num + 1) % (PACKET_NUM_MAX + 1);
         }
 
     }
@@ -103,11 +104,7 @@ int xmodem_send( sender_func_type sender_func, receiver_func_type receiver_func,
     int num_retries = 0;
 
     while (remaining_bytes > 0) {
-        if(remaining_bytes == 0) {
-            break;
-        }
-        
-        else if (remaining_bytes >= PACKET_SIZE) {
+        if (remaining_bytes >= PACKET_SIZE) {
             packet_unpadded_size = PACKET_SIZE;
         } else if (remaining_bytes > 0 && remaining_bytes < PACKET_SIZE) {
             packet_unpadded_size = remaining_bytes;
@@ -121,9 +118,11 @@ int xmodem_send( sender_func_type sender_func, receiver_func_type receiver_func,
         int checksum = 0;
         for (int i = 0; i < packet_unpadded_size; i++) {
             char c = send_buffer[curr_sendbuffer_index + i];
-            checksum += c % CHECKSUM_MOD;
+            checksum += c;
             sender_func(c);
         }
+        checksum = checksum % CHECKSUM_MOD;
+
         // Handle padding with zeroes
         for (int i = 0; i < PACKET_SIZE - packet_unpadded_size; i++) {
             sender_func(0);
@@ -134,9 +133,10 @@ int xmodem_send( sender_func_type sender_func, receiver_func_type receiver_func,
         char packet_recieved = receiver_func();
         if(packet_recieved == ACK){
             // Packet received, move on.
-            packet_num += 1 % (PACKET_NUM_MAX + 1);
+            packet_num = (packet_num + 1) % (PACKET_NUM_MAX + 1);
             curr_sendbuffer_index += packet_unpadded_size;
             remaining_bytes -= packet_unpadded_size;
+            num_retries = 0;
         } else {
             //Checksum doesn't match. Send again.
             if(num_retries < MAX_RETRIES) {

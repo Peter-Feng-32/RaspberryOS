@@ -4,7 +4,9 @@ SECTIONS
 
 	.text.boot : { *(.text.boot) }
 	.text : { *(.text) }
-	.rodata : { *(.rodata) }
+	.rodata : { *(.rodata .rodata.*) }
+	PROVIDE(_data = .);
+
 	.data : { *(.data) }
     
 	. = ALIGN(0x8); 

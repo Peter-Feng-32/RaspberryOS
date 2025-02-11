@@ -1,5 +1,5 @@
 #import "../include/xmodem.h"
-
+#import "../include/io.h"
 /**
 Packets are 128 bytes.
 
@@ -30,9 +30,6 @@ Sends an ACK byte.
 TODO: Error handling and CAN handling.
 
  */
-typedef char (*receiver_func_type) (void);
-typedef void (*sender_func_type) (char);
-
 
 int xmodem_receive( sender_func_type sender_func, receiver_func_type receiver_func, char * recv_buffer ) {
     sender_func(NAK);

@@ -1,22 +1,16 @@
 #include "../include/uart.h"
+#include "../include/shell.h"
 
 void kernel_main(void)
 {
     initialize_uart();
-    send_uart('H');
-    send_uart('E');
-    send_uart('L');
-    send_uart('L');
-    send_uart('O');
-    send_uart(' ');
-    send_uart('W');
-    send_uart('O');
-    send_uart('R');
-    send_uart('L');
-    send_uart('D');
-    send_uart('!');
+    
+    struct shell kernel_shell;
+    kernel_shell.input = &recv_uart;
+    kernel_shell.output = &send_uart;
+
+    run_shell(&kernel_shell);
 
     while(1){
-
     }
 }

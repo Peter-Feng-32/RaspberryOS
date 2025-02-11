@@ -26,4 +26,4 @@ kernel8.img: $(SRC_DIR)/link.ld $(OBJ_FILES)
 	llvm-objcopy -O binary $(BUILD_DIR)/kernel8.elf $(BUILD_DIR)/kernel8.img
 
 run: kernel8.img
-	qemu-system-aarch64 -M raspi3b -kernel $(BUILD_DIR)/kernel8.img -d in_asm -serial null -serial vc
+	qemu-system-aarch64 -M raspi3b -kernel $(BUILD_DIR)/kernel8.img -d in_asm -serial null -serial vc -s

@@ -3,7 +3,7 @@ SECTIONS
     . = 0x80000;
 
 	.text.boot : { *(.text.boot) }
-	.text : { *(.text) }
+	.text : { *(.text .text.*) }
 	.rodata : { *(.rodata .rodata.*) }
 	PROVIDE(_data = .);
 

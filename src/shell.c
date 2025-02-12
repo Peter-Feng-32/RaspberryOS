@@ -97,6 +97,6 @@ void run_shell(struct shell* shell) {
 }
 
 void parse_command(char * command, int command_length) {
-    
+    // Todo for when we actually need this for different programs.
 }
 

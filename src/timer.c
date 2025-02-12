@@ -21,6 +21,7 @@ unsigned long long read_time() {
 void tick_in(unsigned long delay){
     unsigned long lower = get32(TIMER_CLO);
     put32(TIMER_C1, lower + delay);
+    put32(TIMER_CS, get32(TIMER_CS) | TIMER_1_MASK);
 }
 
 void set_timer_handler();

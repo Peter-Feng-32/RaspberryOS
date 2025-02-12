@@ -16,7 +16,6 @@ void handle_irq() {
         send_uart('T');
         send_uart('\n');
 
-        put32(TIMER_CS, get32(TIMER_CS) | TIMER_1_MASK);
     }
     
 }

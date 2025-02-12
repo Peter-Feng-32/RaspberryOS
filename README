@@ -15,5 +15,4 @@ Next write file transfer functionality with bootloader.
 
 Todo: 
 Add commands to generate linker map file and dependency files.
-
-
+Typedef so we dont use int, long, long long anymore instead we use u16, u32, u64

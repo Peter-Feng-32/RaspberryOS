@@ -1,4 +1,5 @@
 #include "../include/shell.h"
+#include "../include/strings.h"
 
 /*
 
@@ -27,7 +28,75 @@ void write_string(struct shell* shell, const char * string) {
     }
 }
 
+void echo(struct shell* shell, char* arg) {
+    write_string(shell, arg);
+    write_string(shell, "\r\n");
+}
+
 void run_shell(struct shell* shell) {
     write_string(shell, "Welcome to Raspberry Pi Kernel Shell!\r\n");
-    write_string(shell, SHELL_PREFIX);
+
+    while(1) {
+        write_string(shell, SHELL_PREFIX);
+
+        char command[COMMAND_MAX_LEN];
+        int current_char_index = 0;
+        int arg_count = 0;
+        char is_argument_start = 0;
+
+        while (current_char_index < COMMAND_MAX_LEN) {
+            char c = shell->input();
+
+            if(arg_count == COMMAND_MAX_ARGUMENTS) {
+                if(c != BACKSPACE && c != DELETE) {
+                    continue;
+                }
+            }
+
+            if (c == ' ') {
+                // Next argument
+                if(is_argument_start == 0) {
+                    is_argument_start = 1;
+                }
+                command[current_char_index++] = c;
+                shell->output(c);
+            } else if (c == BACKSPACE || c == DELETE) {
+                if(current_char_index > 0) {
+                    current_char_index--;
+                    command[current_char_index] = '\0';
+                    if (current_char_index > 0 && command[current_char_index - 1] == ' ') {
+                        is_argument_start = 1;
+                    } else {
+                        is_argument_start = 0;
+                    }
+                    write_string(shell, DELETE_CHAR_SEQ);
+                }
+            } else if (c == CARRIAGE_DOWN || c == NEWLINE) {
+                command[current_char_index] = '\0';
+                write_string(shell, "\r\n");
+                break;
+            }
+            else {
+                if(is_argument_start == 1) {
+                    is_argument_start = 0;
+                    arg_count++;
+                }
+                command[current_char_index++] = c;
+                shell->output(c);
+            }
+        }
+
+        if(!strncmp(command, "echo ", 5)) {
+            echo(shell, command + 5);
+        } else {
+            write_string(shell, "Unrecognized command: ");
+            echo(shell, command);   
+        }
+
+    }
 }
+
+void parse_command(char * command, int command_length) {
+    
+}
+

@@ -7,7 +7,13 @@ Now we implement XMODEM for file transfer - Done
 
 Then we write a utility to talk to our raspberry pi (ttywrite) - Not needed w/ emulator.  Skip for now. 
 
-After that, we can implement a shell with hard coded 'echo'.  Store arguments as a stack vector.  Make a console.
+After that, we can implement a shell with hard coded 'echo'.  Store arguments as a stack vector.  Make a console. - Done
+
+Write timer and interrupt controller - In progress
+
+Next write file transfer functionality with bootloader.
 
 Todo: 
 Add commands to generate linker map file and dependency files.
+
+

@@ -15,6 +15,7 @@ void kernel_main(void)
     kernel_shell.input = &recv_uart;
     kernel_shell.output = &send_uart;
 
+
     run_shell(&kernel_shell);
 
     while(1){

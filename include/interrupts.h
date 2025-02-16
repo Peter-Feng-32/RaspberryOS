@@ -19,6 +19,8 @@
 #define SYSTEM_TIMER_1_IRQ 2
 
 void irq_vector_init();
-void enable_disable_irq(int interrupt_register, int interrupt);
+void enable_irq();
+void disable_irq();
+void enable_interrupt_controller();
 
 #endif

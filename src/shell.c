@@ -1,5 +1,6 @@
 #include "../include/shell.h"
 #include "../include/strings.h"
+#include "../include/timer.h"
 
 /*
 

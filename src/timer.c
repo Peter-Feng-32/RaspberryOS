@@ -1,14 +1,13 @@
 #include "../include/timer.h"
 #include "../include/utils.h"
+
 /**
 
 Write timer-specific interrupt handler here.
 As well as code to set up timers.
 
 Timer upper and lower registers combined are read_time.
-
-
- */
+*/
 
 unsigned long long read_time() {
     unsigned long lower = get32(TIMER_CLO);
@@ -21,7 +20,4 @@ unsigned long long read_time() {
 void tick_in(unsigned long delay){
     unsigned long lower = get32(TIMER_CLO);
     put32(TIMER_C1, lower + delay);
-    put32(TIMER_CS, get32(TIMER_CS) | TIMER_1_MASK);
 }
-
-void set_timer_handler();

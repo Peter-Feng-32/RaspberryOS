@@ -23,4 +23,7 @@ char recv_uart();
 //Set baud rate here
 #define AUX_MU_BAUD_ADDR (MMAP_DEVICE_BASE + 0x00215068)
 
+#define BYTE_READY 0
+#define TIMED_OUT 1
+
 #endif

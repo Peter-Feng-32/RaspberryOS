@@ -1,6 +1,7 @@
 #include "../include/gpio.h"
 #include "../include/utils.h"
 #include "../include/uart.h"
+#include "../include/timer.h"
 
 void uart_init(){
     /**
@@ -80,4 +81,16 @@ char recv_uart() {
         }
     }
     return (char) get32(AUX_MU_IO_REG_ADDR);
+}
+
+char wait_for_byte(int timeout) {
+    int start_time = read_time();
+    while(1) {
+        if (read_time() > start_time + timeout) {
+            return TIMED_OUT;
+        }
+        if(get32(AUX_MU_LSR_REG_ADDR) & 1) {
+            return BYTE_READY;
+        }
+    }
 }

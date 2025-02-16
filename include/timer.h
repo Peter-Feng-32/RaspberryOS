@@ -15,5 +15,5 @@
 #define TIMER_1_MASK 2
 
 void tick_in(unsigned long delay);
-
+unsigned long long read_time();
 #endif

@@ -1,4 +1,5 @@
 #include "mm.h"
+#include "sysregs.h"
 
 .section ".text.boot"
 .global _start
@@ -20,6 +21,21 @@ memzero:
     ret
 
 master:
+	ldr	x0, =SCTLR_VALUE_MMU_DISABLED
+	msr	sctlr_el1, x0		
+
+	ldr	x0, =HCR_VALUE
+	msr	hcr_el2, x0
+
+	ldr	x0, =SPSR_VALUE
+	msr	spsr_el2, x0
+
+	adr	x0, el1_entry		
+	msr	elr_el2, x0
+
+	eret	
+
+el1_entry:
     adr x0, bss_begin
     adr x1, bss_end
     sub x1, x1, x0 

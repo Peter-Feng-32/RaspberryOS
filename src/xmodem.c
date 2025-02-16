@@ -31,7 +31,7 @@ TODO: Error handling and CAN handling.
 
  */
 
-int xmodem_receive(sender_func_type sender_func, receiver_func_type receiver_func, char * recv_buffer ) {
+int xmodem_receive(sender_func_type sender_func, receiver_func_type receiver_func, char * recv_buffer, int timeout) {
     sender_func(NAK);
     
     int recv_buffer_index = 0;
@@ -39,14 +39,14 @@ int xmodem_receive(sender_func_type sender_func, receiver_func_type receiver_fun
     int packet_num = 1;
     while(1) {
         char signal_byte;
-        if (receiver_func(&signal_byte)) {
+        if (receiver_func(&signal_byte, timeout)) {
             return FAILURE;
         }
 
         if (signal_byte == EOT) {
             sender_func(NAK);
             char c;
-            if (receiver_func(&c)) {
+            if (receiver_func(&c, timeout)) {
                 sender_func(CAN);
                 return FAILURE;
             }else if (c == EOT) {
@@ -62,12 +62,12 @@ int xmodem_receive(sender_func_type sender_func, receiver_func_type receiver_fun
         }
 
         char recvd_packet_num;
-        if(receiver_func(&recvd_packet_num) || recvd_packet_num != packet_num) {
+        if(receiver_func(&recvd_packet_num, timeout) || recvd_packet_num != packet_num) {
             sender_func(CAN);
             return FAILURE;
         }
         char recvd_packet_num_complement;
-        if(receiver_func(&recvd_packet_num_complement) || recvd_packet_num_complement != (255 - packet_num)) {
+        if(receiver_func(&recvd_packet_num_complement, timeout) || recvd_packet_num_complement != (255 - packet_num)) {
             sender_func(CAN);
             return FAILURE;
         }
@@ -75,7 +75,7 @@ int xmodem_receive(sender_func_type sender_func, receiver_func_type receiver_fun
         char checksum = 0;
         for (int i = 0; i < PACKET_SIZE; i++) {
             char recvd;
-            if (receiver_func(&recvd)) {
+            if (receiver_func(&recvd, timeout)) {
                 sender_func(CAN);
                 return FAILURE;
             }
@@ -85,7 +85,7 @@ int xmodem_receive(sender_func_type sender_func, receiver_func_type receiver_fun
         checksum = checksum % CHECKSUM_MOD;
 
         char recvd_checksum;
-        if (receiver_func(&recvd_checksum)) {
+        if (receiver_func(&recvd_checksum, timeout)) {
             sender_func(CAN);
             return FAILURE;
         }
@@ -102,9 +102,9 @@ int xmodem_receive(sender_func_type sender_func, receiver_func_type receiver_fun
     return SUCCESS;
 }
 
-int xmodem_send( sender_func_type sender_func, receiver_func_type receiver_func, char * send_buffer, int send_size ) {
+int xmodem_send(sender_func_type sender_func, receiver_func_type receiver_func, char * send_buffer, int send_size, int timeout) {
     char start_NAK;
-    if (receiver_func(&start_NAK) || start_NAK != NAK) {
+    if (receiver_func(&start_NAK, timeout) || start_NAK != NAK) {
         sender_func(CAN);
         return FAILURE;
     }
@@ -145,7 +145,7 @@ int xmodem_send( sender_func_type sender_func, receiver_func_type receiver_func,
         sender_func(checksum);
 
         char packet_recieved;
-        if (receiver_func(&packet_recieved)) {
+        if (receiver_func(&packet_recieved, timeout)) {
             sender_func(CAN);
             return FAILURE;
         }
@@ -168,13 +168,13 @@ int xmodem_send( sender_func_type sender_func, receiver_func_type receiver_func,
 
     sender_func(EOT);
     char c;
-    if (receiver_func(&c) || c != NAK) {
+    if (receiver_func(&c, timeout) || c != NAK) {
         return FAILURE;
     }
     sender_func(EOT);
-    if (receiver_func(&c) || c != ACK) {
+    if (receiver_func(&c, timeout) || c != ACK) {
         return FAILURE;
     }
-    
+
     return SUCCESS;
 }

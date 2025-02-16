@@ -47,7 +47,7 @@ void run_shell(struct shell* shell) {
 
         while (current_char_index < COMMAND_MAX_LEN) {
             char c;
-            shell->input(&c);
+            shell->input(&c, 0);
 
             if(arg_count == COMMAND_MAX_ARGUMENTS) {
                 if(c != BACKSPACE && c != DELETE) {

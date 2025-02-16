@@ -5,6 +5,7 @@
 void initialize_uart();
 int send_uart(char c);
 int recv_uart(char* c);
+int recv_with_timeout_uart(char* c, int timeout);
 
 //Write and read data from here.
 #define AUX_MU_IO_REG_ADDR (MMAP_DEVICE_BASE + 0x00215040)

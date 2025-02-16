@@ -98,6 +98,10 @@ char wait_for_byte(int timeout) {
 }
 
 int recv_with_timeout_uart(char* c, int timeout) {
+    if (timeout <= 0) {
+        return recv_uart(c);
+    }
+
     if (wait_for_byte(timeout)) {
         return TIMED_OUT;
     } else {

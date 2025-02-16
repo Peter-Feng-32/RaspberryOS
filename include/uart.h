@@ -3,8 +3,8 @@
 #include "peripherals.h"
 
 void initialize_uart();
-void send_uart(char c);
-char recv_uart();
+int send_uart(char c);
+int recv_uart(char* c);
 
 //Write and read data from here.
 #define AUX_MU_IO_REG_ADDR (MMAP_DEVICE_BASE + 0x00215040)

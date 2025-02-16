@@ -1,7 +1,7 @@
 #ifndef _IO_H
 #define _IO_H
 
-typedef char (*receiver_func_type) (void);
-typedef void (*sender_func_type) (char);
+typedef int (*receiver_func_type) (char *);
+typedef int (*sender_func_type) (char);
 
 #endif

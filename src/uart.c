@@ -65,22 +65,24 @@ void initialize_uart() {
     put32(AUX_MU_CNTL_REG_ADDR, 3);
 }
 
-void send_uart(char c) {
+int send_uart(char c) {
     while(1) {
         if(get32(AUX_MU_LSR_REG_ADDR) & 32) {
             break;
         }
     }
     put32(AUX_MU_IO_REG_ADDR, c);
+    return 0;
 }
 
-char recv_uart() {
+int recv_uart(char* c) {
     while(1) {
         if(get32(AUX_MU_LSR_REG_ADDR) & 1) {
             break;
         }
     }
-    return (char) get32(AUX_MU_IO_REG_ADDR);
+    *c = (char) get32(AUX_MU_IO_REG_ADDR);
+    return BYTE_READY;
 }
 
 char wait_for_byte(int timeout) {
@@ -94,3 +96,13 @@ char wait_for_byte(int timeout) {
         }
     }
 }
+
+int recv_with_timeout_uart(char* c, int timeout) {
+    if (wait_for_byte(timeout)) {
+        return TIMED_OUT;
+    } else {
+        *c = (char) get32(AUX_MU_IO_REG_ADDR);
+        return BYTE_READY;
+    }
+}
+

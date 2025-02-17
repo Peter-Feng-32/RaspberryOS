@@ -66,10 +66,6 @@ int transmit(int fd, char * filename) {
         // Wait for ACK
         read(fd, &response, 1);
         if (response != ACK) {
-            for (int i = 0; i < 1000; i++) {
-                read(fd, &response, 1);
-                printf("%d\n", response);
-            }
             printf("Response");
             fclose(file);
             return -1;

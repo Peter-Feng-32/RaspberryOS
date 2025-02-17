@@ -41,7 +41,7 @@ el1_entry:
     sub x1, x1, x0 
     bl memzero
 
-    ldr x0, =0x08000000
+    ldr x0, =0x0F000000
     mov sp, x0 // For now, set stack pointer to 0x4000000
     bl receive_kernel   
 

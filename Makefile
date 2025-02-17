@@ -28,14 +28,18 @@ kernel8.img: $(SRC_DIR)/link.ld $(OBJ_FILES)
 	ld.lld -v -m aarch64elf -nostdlib -T $(SRC_DIR)/link.ld -o $(BUILD_DIR)/kernel8.elf $(OBJ_FILES)
 	llvm-objcopy -O binary $(BUILD_DIR)/kernel8.elf $(BUILD_DIR)/kernel8.img
 
+kernel8.bin: $(SRC_DIR)/link.ld $(OBJ_FILES)
+	ld.lld -v -m aarch64elf -nostdlib -T $(SRC_DIR)/link.ld -o $(BUILD_DIR)/kernel8.elf $(OBJ_FILES)
+	llvm-objcopy -O binary $(BUILD_DIR)/kernel8.elf $(BUILD_DIR)/kernel8.bin
+
 bootloader: $(BOOTLOADER_OBJ_FILES)
 	mkdir -p $(BUILD_DIR)/bootloader
 	ld.lld -m aarch64elf -nostdlib -T $(SRC_DIR)/bootloader/link.ld -o $(BUILD_DIR)/bootloader/kernel8.elf $(BOOTLOADER_OBJ_FILES)
 	llvm-objcopy -O binary $(BUILD_DIR)/bootloader/kernel8.elf $(BUILD_DIR)/bootloader/kernel8.img
 
-transmit: kernel8.img
+transmit: kernel8.bin
 	clang $(UTILS_DIR)/transmit.c -o $(BUILD_DIR)/transmit 
-	$(BUILD_DIR)/transmit uart1.out $(BUILD_DIR)/kernel8.img
+	$(BUILD_DIR)/transmit uart1.out $(BUILD_DIR)/kernel8.bin
 
 run: kernel8.img
 	qemu-system-aarch64 -M raspi3b -kernel $(BUILD_DIR)/kernel8.img -d in_asm -serial null -serial vc 

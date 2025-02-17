@@ -7,7 +7,9 @@ put32:
 
 .globl get32
 get32:
+    ldr x2, =0x0
     ldr w0, [x0]
+    ldr x2, =0x300
     ret
 
 .globl get_el

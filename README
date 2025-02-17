@@ -19,3 +19,5 @@ Typedef so we dont use int, long, long long anymore instead we use u16, u32, u64
 
 UART issue:
 https://forums.raspberrypi.com/viewtopic.php?t=368715
+
+qemu-system-aarch64 -M raspi3b -kernel build/bootloader/kernel8.img -nographic -serial null -chardev pipe,id=uart1,path=uart1 -serial chardev:uart1 -s -S

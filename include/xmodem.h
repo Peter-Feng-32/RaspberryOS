@@ -18,9 +18,9 @@
 #define IN_PROGRESS 2
 
 #define SUCCESS 0
-#define FAILURE -1
+#define FAILURE 1
 
-int xmodem_receive(sender_func_type sender_func, receiver_func_type receiver_func, char * recv_buffer, int timeout);
+int xmodem_receive(sender_func_type sender_func, receiver_func_type receiver_func, volatile char * recv_buffer, int timeout);
 int xmodem_send(sender_func_type sender_func, receiver_func_type receiver_func, char * send_buffer, int send_size, int timeout);
 
 #endif

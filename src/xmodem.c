@@ -30,18 +30,20 @@ TODO: Error handling and CAN handling.
 
  */
 
-int xmodem_receive(sender_func_type sender_func, receiver_func_type receiver_func, char * recv_buffer, int timeout) {
+int xmodem_receive(sender_func_type sender_func, receiver_func_type receiver_func, volatile char * recv_buffer, int timeout) {
     sender_func(NAK);
-    
+
     int recv_buffer_index = 0;
 
     int packet_num = 1;
     while(1) {
-        char signal_byte;
+        char signal_byte = 'x';
+
         if (receiver_func(&signal_byte, timeout)) {
+            sender_func(signal_byte);
+            sender_func(CAN);
             return FAILURE;
         }
-
         if (signal_byte == EOT) {
             sender_func(NAK);
             char c;
@@ -71,13 +73,14 @@ int xmodem_receive(sender_func_type sender_func, receiver_func_type receiver_fun
             return FAILURE;
         }
 
-        char checksum = 0;
+        int checksum = 0;
+        char recvd;
         for (int i = 0; i < PACKET_SIZE; i++) {
-            char recvd;
             if (receiver_func(&recvd, timeout)) {
                 sender_func(CAN);
                 return FAILURE;
-            }
+            }        
+            //sender_func(recvd);
             recv_buffer[recv_buffer_index + i] = recvd;
             checksum += recvd;
         }
@@ -88,7 +91,8 @@ int xmodem_receive(sender_func_type sender_func, receiver_func_type receiver_fun
             sender_func(CAN);
             return FAILURE;
         }
-        else if(recvd_checksum != checksum) {
+
+        if(recvd_checksum != checksum) {
             sender_func(NAK);
         } else {
             sender_func(ACK);

@@ -46,6 +46,8 @@ Enable receiver and transmitter.
  */
 
 void initialize_uart() {
+    set_gpfsel();
+
     put32(AUX_ENB_ADDR, get32(AUX_ENB_ADDR) | 1);
     put32(AUX_MU_CNTL_REG_ADDR, 0);
     unsigned int mask = 3; // Clear last 2 bits
@@ -65,7 +67,7 @@ void initialize_uart() {
     put32(AUX_MU_CNTL_REG_ADDR, 3);
 }
 
-int send_uart(char c) {
+int send_uart(volatile char c) {
     while(1) {
         if(get32(AUX_MU_LSR_REG_ADDR) & 32) {
             break;
@@ -75,7 +77,7 @@ int send_uart(char c) {
     return 0;
 }
 
-int recv_uart(char* c) {
+int recv_uart(volatile char* c) {
     while(1) {
         if(get32(AUX_MU_LSR_REG_ADDR) & 1) {
             break;
@@ -86,9 +88,10 @@ int recv_uart(char* c) {
 }
 
 char wait_for_byte(int timeout) {
-    int start_time = read_time();
+    volatile int start_time = read_time();
     while(1) {
-        if (read_time() > start_time + timeout) {
+        volatile int curr_time = read_time();
+        if (curr_time > start_time + timeout) {
             return TIMED_OUT;
         }
         if(get32(AUX_MU_LSR_REG_ADDR) & 1) {
@@ -107,6 +110,6 @@ int recv_with_timeout_uart(char* c, int timeout) {
     } else {
         *c = (char) get32(AUX_MU_IO_REG_ADDR);
         return BYTE_READY;
-    }
+    }   
 }
 

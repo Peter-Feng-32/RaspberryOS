@@ -4,7 +4,7 @@
 
 void initialize_uart();
 int send_uart(char c);
-int recv_uart(char* c);
+int recv_uart(volatile char* c);
 int recv_with_timeout_uart(char* c, int timeout);
 
 //Write and read data from here.

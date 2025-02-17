@@ -2,7 +2,7 @@ SECTIONS
 {
     . = 0x80000;
 
-	.text.boot : { *(.text.boot) }
+	.text.init : { *(.text.init) }
 	.text : { *(.text .text.*) }
 	.rodata : { *(.rodata .rodata.*) }
 	PROVIDE(_data = .);

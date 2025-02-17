@@ -10,9 +10,9 @@ Timer upper and lower registers combined are read_time.
 */
 
 unsigned long long read_time() {
-    unsigned long lower = get32(TIMER_CLO);
-    unsigned long higher = get32(TIMER_CHI);
-    unsigned long long time = ((unsigned long long) higher) << 32 | lower;
+    volatile unsigned long lower = get32(TIMER_CLO);
+    volatile unsigned long higher = get32(TIMER_CHI);
+    volatile unsigned long long time = ((unsigned long long) higher) << 32 | lower;
 
     return time;
 }

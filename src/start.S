@@ -41,6 +41,7 @@ el1_entry:
     sub x1, x1, x0 
     bl memzero
 
-    mov sp, #LOW_MEMORY // For now, set stack pointer to 0x4000000
-    bl kernel_main   
+    ldr x0, =0x05000000
+    mov sp, x0 // For now, set stack pointer to 0x4000000
+    bl receive_kernel   
 

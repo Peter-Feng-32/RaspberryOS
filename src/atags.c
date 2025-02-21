@@ -12,7 +12,7 @@ void print_atag(string_sender_func_type sender, struct atag* tag) {
     } else if (tag->tag == ATAG_MEM_VALUE) {
         sender("mem");
     } else if (tag->tag == ATAG_CMDLINE_VALUE) {
-        sender("cmdline")
+        sender("cmdline");
     }
     sender("\r\n");
 }

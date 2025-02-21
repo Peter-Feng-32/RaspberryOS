@@ -3,6 +3,10 @@
 #ifndef _ATAGS_H
 #define _ATAGS_H
 
+#define ATAG_CORE_VALUE 0x54410001
+#define ATAG_NONE_VALUE 0
+#define ATAG_MEM_VALUE 0x54410002
+#define ATAG_CMDLINE_VALUE 0x54410009
 
 struct atag_core {
     u32 flags;              /* bit 0 = read-only */
@@ -23,17 +27,17 @@ struct atag_cmdline {
         char    cmdline[1];     /* this is the minimum size */
 };
 
-union Data {
-    atag_core core;
-    atag_none none;
-    atag_mem mem;
-    atag_cmdline cmdline;
+union atag_data {
+    struct atag_core core;
+    struct atag_none none;
+    struct atag_mem mem;
+    struct atag_cmdline cmdline;
 };
 
-struct ATag{
+struct atag{
     u32 dwords;
     u32 tag;
-    Data data;
+    union atag_data data;
 };
 
 

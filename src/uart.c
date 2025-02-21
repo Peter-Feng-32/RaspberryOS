@@ -67,6 +67,14 @@ void initialize_uart() {
     put32(AUX_MU_CNTL_REG_ADDR, 3);
 }
 
+int send_uart_string(char * str) {
+    int i = 0;
+    while(str[i] != '\0') {
+        send_uart(str[i++]);
+    }
+}
+
+
 int send_uart(volatile char c) {
     while(1) {
         if(get32(AUX_MU_LSR_REG_ADDR) & 32) {

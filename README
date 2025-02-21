@@ -9,9 +9,15 @@ Then we write a utility to talk to our raspberry pi (ttywrite) - Not needed w/ e
 
 After that, we can implement a shell with hard coded 'echo'.  Store arguments as a stack vector.  Make a console. - Done
 
-Write timer and interrupt controller - In progress
+Write timer and interrupt controller - Done
 
-Next write file transfer functionality with bootloader.
+Next write file transfer functionality with bootloader - Mostly done
+
+Next step: implement basic memory allocator.
+
+Then we implement panic handler.
+
+Then we can implement fat32 filesystem.
 
 Todo: 
 Add commands to generate linker map file and dependency files.

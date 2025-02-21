@@ -13,7 +13,14 @@ Write timer and interrupt controller - Done
 
 Next write file transfer functionality with bootloader - Mostly done
 
-Next step: implement basic memory allocator.
+Next step: 
+Implement atags.
+
+Implement uint types.
+
+Restructure directories.
+
+implement basic memory allocator.
 
 Then we implement panic handler.
 

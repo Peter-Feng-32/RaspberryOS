@@ -1,23 +1,26 @@
 #include "../include/atags.h"
 #include "../include/io.h"
 #include "../include/shell.h"
+#include "../include/strings.h"
 
 
-void print_atag(string_sender_func_type sender, struct atag* tag) {
-    sender("Tag is type ");
+void print_atag(sender_func_type sender, struct atag* tag) {
+    strwrite(sender, "Tag is type ");
     if(tag->tag == ATAG_CORE_VALUE) {
-        sender("core");
+        strwrite(sender, "core");
     } else if (tag->tag == ATAG_NONE_VALUE) {
-        sender("none");
+        strwrite(sender, "none");
     } else if (tag->tag == ATAG_MEM_VALUE) {
-        sender("mem");
+        strwrite(sender, "mem");
     } else if (tag->tag == ATAG_CMDLINE_VALUE) {
-        sender("cmdline");
+        strwrite(sender, "cmdline");
     }
-    sender("\r\n");
+    strwrite(sender, "\r\n");
 }
 
-void print_atags(string_sender_func_type sender, struct atag* tag) {
+
+
+void print_atags(sender_func_type sender, struct atag* tag) {
     struct atag * curr_tag = tag;
     while (curr_tag->tag != ATAG_NONE_VALUE) {
         print_atag(sender, curr_tag);

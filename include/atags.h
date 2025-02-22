@@ -1,4 +1,5 @@
 #include "types.h"
+#include "io.h"
 
 #ifndef _ATAGS_H
 #define _ATAGS_H
@@ -7,6 +8,8 @@
 #define ATAG_NONE_VALUE 0
 #define ATAG_MEM_VALUE 0x54410002
 #define ATAG_CMDLINE_VALUE 0x54410009
+
+#define ATAG_BASE_ADDR 0x100
 
 struct atag_core {
     u32 flags;              /* bit 0 = read-only */
@@ -40,5 +43,5 @@ struct atag{
     union atag_data data;
 };
 
-
+void print_atags(sender_func_type sender, struct atag* tag);
 #endif

@@ -1,6 +1,7 @@
 #include "../include/shell.h"
 #include "../include/strings.h"
 #include "../include/timer.h"
+#include "../include/atags.h"
 
 /*
 
@@ -22,23 +23,16 @@ print error: too many arguments if the user passes in too many arguments
 
  */
 
-void write_string(struct shell* shell, const char * string) {
-    int i = 0;
-    while(string[i] != '\0') {
-        shell->output(string[i++]);
-    }
-}
-
 void echo(struct shell* shell, char* arg) {
-    write_string(shell, arg);
-    write_string(shell, "\r\n");
+    strwrite(shell->output, arg);
+    strwrite(shell->output, "\r\n");
 }
 
 void run_shell(struct shell* shell) {
-    write_string(shell, "Welcome to Raspberry Pi Kernel Shell!\r\n");
+    strwrite(shell->output, "Welcome to Raspberry Pi Kernel Shell!\r\n");
 
     while(1) {
-        write_string(shell, SHELL_PREFIX);
+        strwrite(shell->output, SHELL_PREFIX);
 
         char command[COMMAND_MAX_LEN];
         int current_char_index = 0;
@@ -71,11 +65,11 @@ void run_shell(struct shell* shell) {
                     } else {
                         is_argument_start = 0;
                     }
-                    write_string(shell, DELETE_CHAR_SEQ);
+                    strwrite(shell->output, DELETE_CHAR_SEQ);
                 }
             } else if (c == CARRIAGE_DOWN || c == NEWLINE) {
                 command[current_char_index] = '\0';
-                write_string(shell, "\r\n");
+                strwrite(shell->output, "\r\n");
                 break;
             }
             else {
@@ -90,8 +84,10 @@ void run_shell(struct shell* shell) {
 
         if(!strncmp(command, "echo ", 5)) {
             echo(shell, command + 5);
+        } else if (!strncmp(command, "atags ", 6)) {
+            print_atags(shell->output, (struct atag *) 0x100);
         } else {
-            write_string(shell, "Unrecognized command: ");
+            strwrite(shell->output, "Unrecognized command: ");
             echo(shell, command);   
         }
 

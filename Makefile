@@ -39,7 +39,7 @@ bootloader: $(BOOTLOADER_OBJ_FILES)
 
 transmit: kernel8.bin
 	clang $(UTILS_DIR)/transmit.c -o $(BUILD_DIR)/transmit 
-	$(BUILD_DIR)/transmit uart1.out $(BUILD_DIR)/kernel8.bin
+	$(BUILD_DIR)/transmit uart1.out uart1.in $(BUILD_DIR)/kernel8.bin
 
 run: kernel8.img
 	qemu-system-aarch64 -M raspi3b -kernel $(BUILD_DIR)/kernel8.img -d in_asm -serial null -serial vc 
@@ -47,6 +47,6 @@ run: kernel8.img
 make run_bootloader: bootloader
 	qemu-system-aarch64 -M raspi3b -kernel $(BUILD_DIR)/bootloader/kernel8.img -d in_asm -serial null -serial vc 
 
-transmit_pi: kernel8.img
+transmit_pi: kernel8.bin
 	clang $(UTILS_DIR)/transmit.c -o $(BUILD_DIR)/transmit 
-	$(BUILD_DIR)/transmit /dev/cu.usbserial-0001 $(BUILD_DIR)/kernel8.img
+	$(BUILD_DIR)/transmit /dev/cu.usbserial-0001 /dev/cu.usbserial-0001 $(BUILD_DIR)/kernel8.bin

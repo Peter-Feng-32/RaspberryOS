@@ -37,7 +37,7 @@ int xmodem_receive(sender_func_type sender_func, receiver_func_type receiver_fun
 
     int packet_num = 1;
     while(1) {
-        char signal_byte = 'x';
+        char signal_byte = 'y';
 
         if (receiver_func(&signal_byte, timeout)) {
             sender_func(signal_byte);

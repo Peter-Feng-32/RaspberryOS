@@ -46,7 +46,7 @@ Enable receiver and transmitter.
  */
 
 void initialize_uart() {
-    set_gpfsel();
+    //set_gpfsel();
 
     put32(AUX_ENB_ADDR, get32(AUX_ENB_ADDR) | 1);
     put32(AUX_MU_CNTL_REG_ADDR, 0);

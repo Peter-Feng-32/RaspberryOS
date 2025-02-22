@@ -14,7 +14,7 @@
 #define CAN  0x18  // Cancel
 #define PACKET_SIZE 128
 
-int fd_in;
+int fd_out;
 
 int transmit(int fd, char * filename) {
     FILE *file = fopen(filename, "rb"); // Open file in binary mode
@@ -39,7 +39,6 @@ int transmit(int fd, char * filename) {
     printf("Preparing to transmit packet\n");
 
     while ((bytes_read = fread(buffer, 1, PACKET_SIZE, file)) > 0) {
-
         memset(packet, 0, sizeof(packet));
 
         packet[0] = SOH;
@@ -59,14 +58,19 @@ int transmit(int fd, char * filename) {
         packet[1] = packet_num;
         packet[2] = 255 - packet_num;
         printf("Writing packet\n");
-        write(fd_in, packet, sizeof(packet));
-        fsync(fd_in);
+        write(fd_out, packet, sizeof(packet));
+        fsync(fd_out);
         printf("Waiting for ACK\n");
 
         // Wait for ACK
         read(fd, &response, 1);
         if (response != ACK) {
-            printf("Response");
+            printf("Response %d\n", response);
+            for(int i = 0; i < 10; i++) {
+                char c;
+                read(fd, &c, 1);
+                printf("%d\n", c);
+            }
             fclose(file);
             return -1;
         }
@@ -76,7 +80,7 @@ int transmit(int fd, char * filename) {
     // Send EOT
     do {
         char c = EOT;
-        write(fd_in, &c, 1);
+        write(fd_out, &c, 1);
         read(fd, &response, 1);
     } while (response != ACK);
 
@@ -106,26 +110,31 @@ int configure_serial(int fd) {
 
 int main(int argc, char *argv[]) {
     if (argc < 3) {
-        printf("Usage: %s <serial_port> <file>\n", argv[0]);
+        printf("Usage: %s <serial_port_in> <serial_port_out> <file>\n", argv[0]);
         return 1;
     }
     printf("Opening Serial Port\n");
     printf("%s\n", argv[1]);
-    int fd = open(argv[1], O_RDWR | O_NOCTTY );
+    int fd = open(argv[1], O_RDWR | O_NOCTTY | O_NONBLOCK );
     if (fd < 0) {
         perror("Serial port open failed");
         return 1;
     }
-    fd_in = open("uart1.in", O_RDWR | O_NOCTTY );
-    if (fd_in < 0) {
-        perror("Serial port open failed");
-        return 1;
+    if(argv[1] == argv[2]) {
+        fd_out = fd;
+    } else {
+        fd_out = open(argv[2], O_RDWR | O_NOCTTY) ;
+        if (fd_out < 0) {
+            perror("Serial port open failed");
+            return 1;
+        }
     }
+
     printf("Opened Serial Port\n");
 
     configure_serial(fd);
 
-    transmit(fd, argv[2]);
+    transmit(fd, argv[3]);
 
     close(fd);
     return 0;

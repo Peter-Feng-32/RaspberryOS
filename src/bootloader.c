@@ -19,7 +19,6 @@ void receive_kernel(void) {
     volatile char c;
 
     int received = 0;
-    
     while (!received) {
         int x = xmodem_receive(send_uart, recv_with_timeout_uart, (volatile char *) (BINARY_START), BOOTLOADER_TRANSFER_TIMEOUT);
         if (x) {

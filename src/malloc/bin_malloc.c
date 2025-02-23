@@ -3,6 +3,10 @@
 
 static struct bin_list my_bin_list;
 
+/**
+Todo: Fix this when we implement virtual memory.
+Probably have to do this by page or something.  Not sure yet.
+ */
 
 void bin_malloc_init() {
     for (int bin = 0; bin < NUM_BINS; bin++) {
@@ -39,10 +43,14 @@ void * bin_malloc(u32 size) {
         bin_num++;
     }
     if(bin_num < 0 || bin_num > NUM_BINS - 1) {
-        return (void *) -1; // Todo: make exception
+        return (void *) 0; // Todo: make exception
     }
     if(my_bin_list.bin_free_node_count[bin_num] == 0) {
-        return (void *) -1;
+        void * bigger = bin_malloc(size + 1);
+        if (bigger != 0) {
+            return bigger;
+        }
+        return (void *) 0;
     }
 
     struct bin_info * curr_ptr = my_bin_list.bin_ptrs[bin_num];

@@ -1,0 +1,1 @@
+.globl start_process

@@ -1,15 +1,6 @@
 #include "../../include/process/process.h"
 #include "../../include/malloc/bin_malloc.h"
-
-void preempt_disable(void)
-{
-
-}
-
-void preempt_enable(void)
-{
-
-}
+#include "../../include/process/scheduler.h"
 
 static struct process_block* processes[NUM_PROCESSES];
 static int num_processes = 0;
@@ -23,9 +14,9 @@ int make_process(void * fn, void * arg) {
         return 1;
     }
     //Todo: fix initialization
-    process->priority = 0;
+    process->priority = current_process->priority;
     process->state = STATE_STARTED;
-    process->counter = 0;
+    process->counter = current_process->counter;
     process->preempt_count = 0;
 
     process->context.x19 = (u64) fn;

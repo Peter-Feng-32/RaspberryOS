@@ -1,7 +1,7 @@
-#include "../include/uart.h"
-#include "../include/shell.h"
-#include "../include/interrupts.h"
-#include "../include/timer.h"
+#include "../include/devices/uart.h"
+#include "../include/utils/shell.h"
+#include "../include/interrupts/interrupts.h"
+#include "../include/devices/timer.h"
 
 void kernel_main(void)
 {

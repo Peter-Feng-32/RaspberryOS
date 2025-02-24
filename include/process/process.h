@@ -7,6 +7,7 @@
 
 #define STATE_STARTED 0
 
+
 struct cpu_context {
     u64 x19;
     u64 x20;
@@ -31,6 +32,6 @@ struct process_block {
     u32 preempt_count;
 };
 
-void start_process();
+void process_bootstrap();
 
 #endif

@@ -17,11 +17,11 @@ int make_process(void * fn, void * arg) {
     process->priority = current_process->priority;
     process->state = STATE_STARTED;
     process->counter = current_process->counter;
-    process->preempt_count = 0;
+    process->preempt_count = 0; 
 
     process->context.x19 = (u64) fn;
     process->context.x20 = (u64) arg;
-    process->context.pc = (u64) &start_process;
+    process->context.pc = (u64) &process_bootstrap;
 
     void * stack = bin_malloc(PAGE_SIZE);
     process->context.sp = (u64) stack;

@@ -1,6 +1,8 @@
 #include "../../include/process/process.h"
 #include "../../include/process/scheduler.h"
 #include "../../include/malloc/bin_malloc.h"
+#include "../../include/utils/strings.h"
+#include "../../include/devices/uart.h"
 
 struct process_block * current_process;
 
@@ -18,7 +20,7 @@ void initialize_scheduler(void * fn, void * arg) {
     current_process = bin_malloc(sizeof(struct process_block));
     current_process->priority = MAX_PRIORITY;
     current_process->state = STATE_STARTED;
-    current_process->counter = 0;
+    current_process->counter = 10;
     current_process->preempt_count = 0; 
 
     current_process->context.x19 = (u64) fn;

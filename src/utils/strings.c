@@ -30,3 +30,30 @@ void strwrite(sender_func_type output, const char * string) {
         output(string[i++]);
     }
 }
+
+
+void print_number(sender_func_type output, int num) {
+    if (num == 0) {
+        output('0');
+        return;
+    }
+
+    char buffer[10];
+    int i = 0;
+
+    if (num < 0) {
+        output('-');
+        num = -num;
+    }
+
+    // Convert number to string in reverse order
+    while (num > 0) {
+        buffer[i++] = (num % 10) + '0';
+        num /= 10;
+    }
+
+    // Output the digits in correct order
+    while (--i >= 0) {
+        output(buffer[i]);
+    }
+}

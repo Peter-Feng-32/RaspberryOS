@@ -1,5 +1,6 @@
 #include "../../include/devices/timer.h"
 #include "../../include/utils/utils.h"
+#include "../../include//devices/uart.h"
 
 /**
 
@@ -18,6 +19,6 @@ unsigned long long read_time() {
 }
 
 void tick_in(unsigned long delay){
-    unsigned long lower = get32(TIMER_CLO);
+    volatile unsigned long lower = get32(TIMER_CLO);
     put32(TIMER_C1, lower + delay);
 }

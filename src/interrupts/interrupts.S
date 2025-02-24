@@ -13,4 +13,4 @@ enable_irq:
 .globl disable_irq
 disable_irq:
     msr    daifset, #2
-        ret
+    ret

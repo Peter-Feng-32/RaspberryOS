@@ -30,9 +30,9 @@ struct cpu_context {
 struct process_block {
     struct cpu_context context;
     u32 state;
-    u32 counter;
-    u32 priority;
-    u32 preempt_count;
+    int counter;
+    int priority;
+    int preempt_count;
 };
 
 extern void process_bootstrap();

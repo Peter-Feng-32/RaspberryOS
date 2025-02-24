@@ -6,7 +6,10 @@
 #define NUM_PROCESSES 64
 
 #define STATE_STARTED 0
+#define MAX_PRIORITY 10
 
+extern volatile int num_processes;
+extern struct process_block* processes[NUM_PROCESSES];
 
 struct cpu_context {
     u64 x19;

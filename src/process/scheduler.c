@@ -1,8 +1,7 @@
 #include "../../include/process/process.h"
 #include "../../include/process/scheduler.h"
+#include "../../include/malloc/bin_malloc.h"
 
-extern int num_processes;
-extern struct process_block* processes[NUM_PROCESSES];
 struct process_block * current_process;
 
 void preempt_disable(void)
@@ -13,6 +12,23 @@ void preempt_disable(void)
 void preempt_enable(void)
 {
     current_process->preempt_count--;
+}
+
+void initialize_scheduler(void * fn, void * arg) {
+    current_process = bin_malloc(sizeof(struct process_block));
+    current_process->priority = MAX_PRIORITY;
+    current_process->state = STATE_STARTED;
+    current_process->counter = 0;
+    current_process->preempt_count = 0; 
+
+    current_process->context.x19 = (u64) fn;
+    current_process->context.x20 = (u64) arg;
+    current_process->context.pc = (u64) &process_bootstrap;
+    void * stack = bin_malloc(PAGE_SIZE);
+    current_process->context.sp = (u64) stack;
+
+    processes[0] = current_process;
+    num_processes = 1;
 }
 
 void switch_to(struct process_block * p) {

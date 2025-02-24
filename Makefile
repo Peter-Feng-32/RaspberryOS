@@ -9,14 +9,15 @@ all: kernel8.img
 clean: 
 	rm -rf $(BUILD_DIR) *.img
 
-SUBDIRS = bootloader devices interrupts malloc utils xmodem
+SUBDIRS = bootloader devices interrupts malloc utils xmodem process
 
 C_FILES = $(foreach dir, $(SUBDIRS), $(wildcard $(SRC_DIR)/$(dir)/*.c))
 C_FILES += $(wildcard $(SRC_DIR)/*.c)
 ASM_FILES = $(foreach dir, $(SUBDIRS), $(wildcard $(SRC_DIR)/$(dir)/*.S))
 ASM_FILES += $(wildcard $(SRC_DIR)/*.S)
-OBJ_FILES = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%_c.o, $(C_FILES))
-OBJ_FILES += $(patsubst $(SRC_DIR)/%.S, $(BUILD_DIR)/%_S.o, $(ASM_FILES))
+OBJ_FILES = $(patsubst $(SRC_DIR)/%.S, $(BUILD_DIR)/%_S.o, $(ASM_FILES))
+OBJ_FILES += $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%_c.o, $(C_FILES))
+
 
 
 BOOTLOADER_OBJ_FILES = $(BUILD_DIR)/bootloader/start_S.o $(BUILD_DIR)/devices/uart_c.o $(BUILD_DIR)/devices/timer_c.o $(BUILD_DIR)/interrupts/interrupts_c.o $(BUILD_DIR)/interrupts/interrupts_S.o $(BUILD_DIR)/xmodem/xmodem_c.o  $(BUILD_DIR)/utils/utils_S.o $(BUILD_DIR)/interrupts/irq_vector_table_S.o $(BUILD_DIR)/bootloader/bootloader_c.o 

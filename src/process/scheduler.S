@@ -1,6 +1,6 @@
-#include "schedule.h"
+#include "../../include/process/scheduler.h"
 
-.globl switch_to
+.globl kern_switch_to
 kern_switch_to:
     mov x10, #CONTEXT_OFFSET_IN_PB
     add x8, x0, x10
@@ -33,6 +33,6 @@ kern_switch_to:
     ldr x28, [x8], #8
     ldr x29, [x8], #8
     ldr x9, [x8], #8
-    ldr x30, [x8], #8
+    ldr x30, [x8], #8 // Link register
     mov sp, x9
     ret

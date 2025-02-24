@@ -2,8 +2,8 @@
 #include "../../include/malloc/bin_malloc.h"
 #include "../../include/process/scheduler.h"
 
-static struct process_block* processes[NUM_PROCESSES];
-static int num_processes = 0;
+struct process_block* processes[NUM_PROCESSES];
+volatile int num_processes = 0;
 
 int make_process(void * fn, void * arg) {
     preempt_disable();

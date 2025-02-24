@@ -6,5 +6,5 @@ Since at the start of process x0 and x1 are empty anyway.
  */
 
 process_bootstrap:
-ldr x0, x20
-ble x19
+mov x0, x20
+blr x19

@@ -1,8 +1,9 @@
-#import "../../include/interrupts/interrupts.h"
-#import "../../include/utils/utils.h"
-#import "../../include/devices/timer.h"
-#import "../../include/process/scheduler.h"
-#import "../../include/process/process.h"
+#include "../../include/interrupts/interrupts.h"
+#include "../../include/utils/utils.h"
+#include "../../include/devices/timer.h"
+#include "../../include/process/scheduler.h"
+#include "../../include/process/process.h"
+#include "../../include/devices/uart.h"
 
 //Enable or disable irq depending on interrupt enable/disable register passed in
 void enable_interrupt_controller() {
@@ -10,6 +11,7 @@ void enable_interrupt_controller() {
 }
 
 void handle_irq() {
+    send_uart('C');
     unsigned int pending_interrupts = get32(IRQ_1_PENDING);
     if (pending_interrupts & SYSTEM_TIMER_1_IRQ) {
         // Handle timer interrupt here

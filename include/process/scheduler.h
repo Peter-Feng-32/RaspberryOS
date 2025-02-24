@@ -11,7 +11,7 @@ extern struct process_block * current_process;
 void kern_switch_to(struct process_block * prev, struct process_block * curr);
 void _schedule();
 void initialize_scheduler(void * fn, void * arg);
+void switch_to(struct process_block * p);
 
 #endif
-
 #endif

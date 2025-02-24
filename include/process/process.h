@@ -35,6 +35,7 @@ struct process_block {
     u32 preempt_count;
 };
 
-void process_bootstrap();
+extern void process_bootstrap();
+extern int make_process(void * fn, void * arg);
 
 #endif

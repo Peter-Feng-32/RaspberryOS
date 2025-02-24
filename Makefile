@@ -21,7 +21,7 @@ OBJ_FILES += $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%_c.o, $(C_FILES))
 
 
 BOOTLOADER_OBJ_FILES = $(BUILD_DIR)/bootloader/start_S.o $(BUILD_DIR)/devices/uart_c.o $(BUILD_DIR)/devices/timer_c.o $(BUILD_DIR)/interrupts/interrupts_c.o $(BUILD_DIR)/interrupts/interrupts_S.o $(BUILD_DIR)/xmodem/xmodem_c.o  $(BUILD_DIR)/utils/utils_S.o $(BUILD_DIR)/interrupts/irq_vector_table_S.o $(BUILD_DIR)/bootloader/bootloader_c.o 
-
+BOOTLOADER_OBJ_FILES += $(BUILD_DIR)/process/process_c.o $(BUILD_DIR)/process/process_S.o $(BUILD_DIR)/process/scheduler_c.o $(BUILD_DIR)/process/scheduler_S.o $(BUILD_DIR)/malloc/bin_malloc_c.o 
 $(BUILD_DIR)/%_c.o: $(SRC_DIR)/%.c
 	mkdir -p $(@D)
 	clang --target=aarch64-elf $(CFLAGS) -c $< -o $@

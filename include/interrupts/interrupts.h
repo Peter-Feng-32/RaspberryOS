@@ -18,9 +18,9 @@
 // Defines bitmask corresponding to the IRQ based on the ARM peripherals interrupt table
 #define SYSTEM_TIMER_1_IRQ 2
 
-void irq_vector_init();
-void enable_irq();
-void disable_irq();
-void enable_interrupt_controller();
+extern void irq_vector_init();
+extern void enable_irq();
+extern void disable_irq();
+extern void enable_interrupt_controller();
 
 #endif

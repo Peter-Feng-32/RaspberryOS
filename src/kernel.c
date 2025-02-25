@@ -13,6 +13,22 @@ void test_fun(void) {
     //enable_irq();
 
     while (1) {
+        send_uart('T');
+        send_uart('\n');
+        send_uart('\r');
+        delay(100000);
+    }
+}
+
+
+void test_fun2(void) {
+    //enable_irq();
+
+    while (1) {
+        send_uart('U');
+        send_uart('\n');
+        send_uart('\r');
+        delay(100000);
     }
 }
 
@@ -22,21 +38,18 @@ void kernel_main(void)
     kernel_shell.input = &recv_with_timeout_uart;
     kernel_shell.output = &send_uart;
 
-
     irq_vector_init();
     enable_irq();
     enable_interrupt_controller();
-
-
     bin_malloc_init();
-    initialize_scheduler(&run_shell, &kernel_shell);
+
+    initialize_scheduler(&test_fun, &kernel_shell);
     //tick_in(200000);
 
     put32(TIMER_C1,  (int) get32(TIMER_CLO) + 200000);
 
+    make_process(&test_fun2, &kernel_shell);
 
-    make_process(&test_fun, 0);
-        
     while(1){
         /*
         print_number(get32(TIMER_CS));

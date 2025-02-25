@@ -35,6 +35,10 @@ void bin_malloc_init() {
     }
 }
 
+char is_power_of_2(unsigned int n) {
+    return (n != 0) && ((n & (n - 1)) == 0);
+}
+
 void * bin_malloc(u32 size) {
     u32 bin_num = -BIN_OFFSET;
     u32 temp = size;
@@ -42,6 +46,10 @@ void * bin_malloc(u32 size) {
         temp = temp >> 1;
         bin_num++;
     }
+    if (!is_power_of_2(size)) {
+        bin_num++;
+    }
+
     if(bin_num < 0 || bin_num > NUM_BINS - 1) {
         return (void *) 0; // Todo: make exception
     }

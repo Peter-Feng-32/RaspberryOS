@@ -45,7 +45,6 @@ void switch_to(struct process_block * p) {
     }
     struct process_block * prev = current_process;
     current_process = p;
-    kern_switch_to(prev, current_process);
 }
 
 void _schedule(void)
@@ -73,6 +72,7 @@ void _schedule(void)
             }
         }
     }
+
     switch_to(processes[next]);
     preempt_enable();
 }

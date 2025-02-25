@@ -20,16 +20,21 @@ void handle_irq() {
         // Handle timer interrupt here
         put32(TIMER_C1,  (int) get32(TIMER_CLO) + 2000000);
         put32(TIMER_CS, get32(TIMER_CS) | TIMER_1_MASK);
+
+
         if(num_processes == 0) {
             //tick_in(200000);
             return;
         }
+
 
         current_process->counter--;
         if(current_process->counter > 0 || current_process->preempt_count > 0) {
             //tick_in(200000);
             return;
         }
+
+
 
         current_process->counter = 0;
 

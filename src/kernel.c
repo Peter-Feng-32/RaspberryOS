@@ -49,6 +49,7 @@ void kernel_main(void)
     put32(TIMER_C1,  (int) get32(TIMER_CLO) + 200000);
 
     make_process(&test_fun2, &kernel_shell);
+    make_process(&test_fun2, &kernel_shell);
 
     while(1){
         /*

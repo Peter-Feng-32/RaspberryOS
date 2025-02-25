@@ -45,10 +45,13 @@ void switch_to(struct process_block * p) {
     }
     struct process_block * prev = current_process;
     current_process = p;
+    kern_switch_to(prev, current_process);
+
 }
 
 void _schedule(void)
 {
+    
     preempt_disable();
     int next,c;
     struct process_block * p;
@@ -73,6 +76,22 @@ void _schedule(void)
         }
     }
 
+
+    send_uart('X');
+    send_uart('\n');
+    send_uart('\r');
+    print_number(&send_uart, current_process->counter);
+    send_uart('\n');
+    send_uart('\r');
+    print_number(&send_uart, (int)current_process);
+    send_uart('\n');
+    send_uart('\r');  
+    print_number(&send_uart, current_process -> context.pc);
+    send_uart('\n');
+    send_uart('\r');  
+    print_number(&send_uart, (int) &process_bootstrap);
+    send_uart('\n');
+    send_uart('\r');  
     switch_to(processes[next]);
     preempt_enable();
 }

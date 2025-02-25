@@ -5,12 +5,13 @@
 #include "../../include/process/process.h"
 #include "../../include/devices/uart.h"
 #include "../../include/utils/strings.h"
+#include "../../include/utils/shell.h"
 
 //Enable or disable irq depending on interrupt enable/disable register passed in
 void enable_interrupt_controller() {
     put32(ENABLE_IRQS_1, SYSTEM_TIMER_1_IRQ);
 }
-
+extern void test_fun(void);
 void handle_irq() {
 
     unsigned int pending_interrupts = get32(IRQ_1_PENDING);
@@ -24,8 +25,19 @@ void handle_irq() {
         send_uart('\r');
         print_number(&send_uart, current_process->counter);
         send_uart('\n');
-        send_uart('\r');        
-
+        send_uart('\r');
+        print_number(&send_uart, (int)current_process);
+        send_uart('\n');
+        send_uart('\r');  
+        print_number(&send_uart, current_process -> context.pc);
+        send_uart('\n');
+        send_uart('\r');  
+        print_number(&send_uart, (int) &run_shell);
+        send_uart('\n');
+        send_uart('\r');  
+        print_number(&send_uart, (int) &test_fun);
+        send_uart('\n');
+        send_uart('\r');  
         if(num_processes == 0) {
             //tick_in(200000);
             return;
@@ -52,6 +64,12 @@ void handle_irq() {
         send_uart('\n');
         send_uart('\r');
         print_number(&send_uart, current_process->counter);
+        send_uart('\n');
+        send_uart('\r');  
+        print_number(&send_uart, (int)current_process);
+        send_uart('\n');
+        send_uart('\r');  
+        print_number(&send_uart, current_process -> context.pc);
         send_uart('\n');
         send_uart('\r');  
     }

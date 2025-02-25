@@ -5,6 +5,7 @@
 #include "../../include/devices/uart.h"
 
 struct process_block * current_process;
+char initialized = 0;
 
 void preempt_disable(void)
 {
@@ -20,7 +21,7 @@ void initialize_scheduler(void * fn, void * arg) {
     current_process = bin_malloc(sizeof(struct process_block));
     current_process->priority = MAX_PRIORITY;
     current_process->state = STATE_STARTED;
-    current_process->counter = 10;
+    current_process->counter = 0;
     current_process->preempt_count = 0; 
 
     current_process->context.x19 = (u64) fn;
@@ -34,6 +35,11 @@ void initialize_scheduler(void * fn, void * arg) {
 }
 
 void switch_to(struct process_block * p) {
+    if(!initialized) {
+        initialized = 1;
+        kern_load_only(current_process);
+        return;
+    }
     if(p == current_process) {
         return;
     }
@@ -68,5 +74,9 @@ void _schedule(void)
         }
     }
     switch_to(processes[next]);
+    preempt_enable();
+}
+
+void schedule_tail() {
     preempt_enable();
 }

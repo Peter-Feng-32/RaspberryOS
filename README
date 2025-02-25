@@ -1,3 +1,4 @@
 Todo: basic memory allocator
 
 Not sure why scheduler is broken.  Check memory addresses and make sure we are doing the correct things.  May need to gdb.
+Switching seems to bring us to the wrong place.  Memory alignment issue?  Use gdb to check what we're actually storing and loading on context switch.

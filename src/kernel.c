@@ -36,9 +36,7 @@ void kernel_main(void)
 
 
     make_process(&test_fun, 0);
-    
-    run_shell(&kernel_shell);
-    
+        
     while(1){
         /*
         print_number(get32(TIMER_CS));

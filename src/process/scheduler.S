@@ -36,3 +36,23 @@ kern_switch_to:
     ldr x30, [x8], #8 // Link register
     mov sp, x9
     ret
+
+.globl kern_load_only
+kern_load_only:
+    mov x10, #CONTEXT_OFFSET_IN_PB
+    add x8, x0, x10
+    ldr x19, [x8], #8
+    ldr x20, [x8], #8
+    ldr x21, [x8], #8
+    ldr x22, [x8], #8
+    ldr x23, [x8], #8
+    ldr x24, [x8], #8
+    ldr x25, [x8], #8
+    ldr x26, [x8], #8
+    ldr x27, [x8], #8
+    ldr x28, [x8], #8
+    ldr x29, [x8], #8
+    ldr x9, [x8], #8
+    ldr x30, [x8], #8 // Link register
+    mov sp, x9
+    ret

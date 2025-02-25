@@ -6,5 +6,6 @@ Since at the start of process x0 and x1 are empty anyway.
  */
 
 process_bootstrap:
+bl    schedule_tail
 mov x0, x20
 blr x19
